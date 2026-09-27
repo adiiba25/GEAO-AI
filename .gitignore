@@ -21,3 +21,7 @@ outputs/
 Thumbs.db
 .vscode/
 .idea/
+
+# Logs and caches (OSM downloads, install logs)
+*.log
+cache/

@@ -20,11 +20,13 @@ Everything is processed tile‑by‑tile, so multi‑GB orthomosaics are fine. R
 
 Use a **separate** Python environment — don't install into ArcGIS Pro's `arcgispro-py3`.
 
-**Easiest:** double‑click `run_app.bat`. First run creates `.venv`, installs the core packages and opens the app in your browser.
+**Easiest:** double‑click `run_app.bat`. First run creates `.venv`, installs the core packages and opens the app in your browser at http://localhost:8501. Closing the black window stops the app.
+
+**AI extras:** after the first run, double‑click `install_ai.bat`. It picks the NVIDIA GPU build of PyTorch automatically when a GPU is present (tested on an RTX 3050 Laptop GPU, Python 3.14, CUDA 13).
 
 **Manual:**
 ```powershell
-cd C:\GIS\geoai_app
+cd C:\GIS\GEAO-AI
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
@@ -33,8 +35,8 @@ streamlit run app.py
 
 **AI extras** (vehicle detection, AI segmentation) — install PyTorch for your hardware first:
 ```powershell
-# NVIDIA GPU
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+# NVIDIA GPU (CUDA 13 build; recent NVIDIA driver required)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 # or CPU only (works, but slow on big orthos)
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements-ai.txt

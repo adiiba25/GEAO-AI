@@ -1,6 +1,6 @@
 # AI extras: vehicle / object detection and AI segmentation of buildings, roads, trees.
 # Install PyTorch first to match your hardware (see README):
-#   GPU (Vast.ai / NVIDIA):  pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+#   GPU (Vast.ai / NVIDIA):  pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 #   CPU only:                pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 ultralytics>=8.4          # needed for YOLO26
 segment-geospatial[samgeo]>=0.12   # LangSAM zero-shot text-prompt segmentation
