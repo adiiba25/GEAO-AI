@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Data and outputs (regenerate sample data with examples/make_sample_data.py)
+sample_data/
+out/
+outputs/
+*.tif
+*.tiff
+*.gpkg
+*.gpkg-*
+
+# Model weights (downloaded automatically)
+*.pt
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

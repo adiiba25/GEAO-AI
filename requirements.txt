@@ -1,0 +1,14 @@
+# Core (no GPU needed): vegetation, height-based footprints, change detection, blocks, web app
+rasterio>=1.3
+geopandas>=1.0
+shapely>=2.0
+pyproj
+numpy
+pandas
+scipy
+scikit-image
+pillow
+osmnx>=2.0
+streamlit>=1.40
+folium
+streamlit-folium
