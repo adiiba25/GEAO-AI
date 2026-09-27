@@ -46,7 +46,7 @@ Model weights download automatically on first use.
 pip install -r requirements.txt -r requirements-ai.txt   # PyTorch images already include torch
 streamlit run app.py --server.port 8501 --server.address 0.0.0.0   # open the mapped port
 # or headless batch:
-python cli.py vehicles /data/ortho.tif --weights yolo11m-obb.pt --device 0 -o /data/out
+python cli.py vehicles /data/ortho.tif --weights yolo26m-obb.pt --device 0 -o /data/out
 ```
 
 ## 2. Try it with sample data
@@ -76,15 +76,15 @@ Export a band stack in the preset order (e.g. from GEE or SNAP), or set custom b
 * **Height‑based footprints** are the most reliable route for drone data (the test data recovers 30/30
   buildings). Watch for trees overhanging roofs, parked trucks and tall walls; tune *min height* and
   *min area*.
-* **Vehicles:** the default YOLO11‑OBB model was trained on DOTA aerial imagery. It generalises reasonably
-  but has never seen Kampala; expect misses in dense boda‑boda / matatu traffic. Use `yolo11m-obb.pt` or
-  `yolo11l-obb.pt` on a GPU for better recall.
+* **Vehicles:** the default is **YOLO26‑OBB** (Ultralytics' newest generation, NMS‑free, up to +3.4 mAP over
+  YOLO11 on DOTA). YOLO11‑OBB remains selectable. Both were trained on DOTA aerial imagery and have never seen
+  Kampala; expect misses in dense boda‑boda / matatu traffic. Use `yolo26m/l/x-obb.pt` on a GPU for better recall.
 * **LangSAM** (text prompt) is zero‑shot: great for quick results, inconsistent on informal settlements
   with dense iron‑sheet roofs.
 * **For production building/road mapping, train your own model** (`yolo-seg` backend): digitise a few
   hundred buildings from your own imagery in ArcGIS Pro, or start from open African datasets such as
   the *Open Cities AI Challenge* (includes Kampala tiles) or Google Open Buildings for pre‑labels, then
-  `yolo segment train data=your.yaml model=yolo11s-seg.pt` on Vast.ai. Point the app at the `best.pt`.
+  `yolo segment train data=your.yaml model=yolo26s-seg.pt` on Vast.ai. Point the app at the `best.pt`.
 * **Change detection** between different sensors/sun angles produces false change. The app normalises
   radiometry, but use same‑season, same‑sensor pairs where possible and check the threshold.
 * Always sample‑check outputs against the imagery before reporting counts.
@@ -98,7 +98,7 @@ python cli.py vegetation ortho.tif --ndsm ndsm.tif -o out
 python cli.py footprints ortho.tif --ndsm ndsm.tif -o out
 python cli.py segment ortho.tif --target building --backend langsam -o out
 python cli.py segment ortho.tif --target building --backend yolo-seg --weights best.pt -o out
-python cli.py vehicles ortho.tif -o out
+python cli.py vehicles ortho.tif --weights yolo26s-obb.pt -o out
 python cli.py change t1.tif t2.tif --method index --preset 4 -o out
 python cli.py change ndsm_t1.tif ndsm_t2.tif --method height -o out
 python cli.py footprint-change out1/buildings.gpkg out2/buildings.gpkg -o out

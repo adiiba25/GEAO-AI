@@ -5,7 +5,7 @@ Examples
   python cli.py vegetation ortho.tif --ndsm ndsm.tif -o out/
   python cli.py footprints ortho.tif --ndsm ndsm.tif -o out/
   python cli.py segment ortho.tif --target building --backend langsam -o out/
-  python cli.py vehicles ortho.tif --weights yolo11m-obb.pt -o out/
+  python cli.py vehicles ortho.tif --weights yolo26m-obb.pt -o out/
   python cli.py change t1.tif t2.tif --method index -o out/
   python cli.py change t1_ndsm.tif t2_ndsm.tif --method height -o out/
   python cli.py footprint-change out/buildings_2024.gpkg out/buildings_2026.gpkg -o out/
@@ -62,7 +62,7 @@ def main(argv=None):
     p = common(sub.add_parser("segment")); p.add_argument("--target", default="building")
     p.add_argument("--backend", default="langsam", choices=["langsam", "yolo-seg"]); p.add_argument("--weights")
     p.add_argument("--gsd", type=float, default=0.3); p.add_argument("--ndsm")
-    p = common(sub.add_parser("vehicles")); p.add_argument("--weights", default="yolo11n-obb.pt")
+    p = common(sub.add_parser("vehicles")); p.add_argument("--weights", default="yolo26n-obb.pt", help="yolo26{n,s,m,l,x}-obb.pt, yolo11*-obb.pt or custom .pt")
     p.add_argument("--conf", type=float, default=0.25); p.add_argument("--gsd", type=float, default=0.25)
     p.add_argument("--all-classes", action="store_true"); p.add_argument("--device")
     p = common(sub.add_parser("change"), image=False); p.add_argument("image1"); p.add_argument("image2")

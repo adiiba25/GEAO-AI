@@ -7,8 +7,9 @@ optional and imported lazily - install requirements-ai.txt to enable this module
 
 Backends
 --------
-vehicles  : Ultralytics YOLO-OBB pretrained on DOTA (aerial) - small/large vehicle,
-            plus plane, ship, storage tank ... out of the box, no training needed.
+vehicles  : Ultralytics YOLO26-OBB (default) or YOLO11-OBB, pretrained on DOTA-v1.0
+            aerial imagery - small/large vehicle, plus plane, ship, storage tank ...
+            out of the box, no training needed. Any size: yolo26{n,s,m,l,x}-obb.pt.
 buildings : "langsam"  zero-shot text prompt ("building") via segment-geospatial
 roads       "yolo-seg" your own trained Ultralytics segmentation weights
                         (recommended for production; e.g. trained on Open Cities AI
@@ -79,11 +80,11 @@ def _px_to_world(tr, pts_xy):
 
 
 # ---------------------------------------------------------------- vehicles (OBB)
-def detect_objects(path: str, rgb=(1, 2, 3), weights: str = "yolo11n-obb.pt",
+def detect_objects(path: str, rgb=(1, 2, 3), weights: str = "yolo26n-obb.pt",
                    classes: set[str] | None = DOTA_VEHICLE_CLASSES, conf: float = 0.25,
                    target_gsd: float = 0.25, tile_px: int = 1024, overlap_px: int = 128,
                    iou_nms: float = 0.4, device: str | None = None, progress=None) -> gpd.GeoDataFrame:
-    """Oriented-box object detection. Default: vehicles with DOTA-pretrained YOLO11-OBB.
+    """Oriented-box object detection. Default: vehicles with DOTA-pretrained YOLO26-OBB.
 
     target_gsd ~0.2-0.3 m matches DOTA; don't feed 3 cm drone pixels unresampled.
     Pass classes=None to keep every DOTA class (planes, ships, tanks, pools, ...).

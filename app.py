@@ -187,14 +187,23 @@ with left:
         if coarse:
             st.warning(f"GSD ~{info.gsd_m:.0f} m is too coarse for individual objects. "
                        "Use Vegetation, Change and Blocks for Sentinel/Landsat.")
-        st.markdown("**Vehicles & aerial objects** — YOLO11-OBB pretrained on DOTA (no training).")
+        st.markdown("**Vehicles & aerial objects** — YOLO26-OBB pretrained on DOTA aerial imagery (no training).")
         c1, c2 = st.columns(2)
         conf = c1.slider("Confidence", 0.05, 0.9, 0.25, 0.05)
         tgsd = c2.number_input("Model GSD (m)", 0.05, 2.0, 0.25, 0.05,
                                help="Tiles are resampled to this. DOTA ≈ 0.15–0.5 m.")
         all_cls = st.checkbox("All DOTA classes (planes, ships, tanks, pools…)", False)
-        weights = st.text_input("Weights", "yolo11n-obb.pt", help="Use yolo11m/l/x-obb.pt for more accuracy on GPU")
-        if st.button("Detect objects", type="primary", disabled=not ai["ultralytics"]):
+        m1, m2 = st.columns(2)
+        family = m1.selectbox("Model", ["YOLO26", "YOLO11", "Custom .pt"],
+                              help="YOLO26: newest, NMS-free, most accurate on DOTA. YOLO11: previous generation.")
+        size = m2.selectbox("Size", ["n (fast, CPU ok)", "s", "m (GPU)", "l (GPU)", "x (GPU, best)"],
+                            disabled=family == "Custom .pt")
+        if family == "Custom .pt":
+            weights = st.text_input("Weights path", "", placeholder=r"e.g. C:\GIS\models\best.pt")
+        else:
+            weights = f"{family.lower()}{size[0]}-obb.pt"
+            st.caption(f"Weights: `{weights}` (downloads automatically on first run)")
+        if st.button("Detect objects", type="primary", disabled=not ai["ultralytics"] or not weights):
             from geoai.detect import detect_objects
             with st.spinner("Running detector…"):
                 g = detect_objects(img1, rgb, weights, None if all_cls else {"small vehicle", "large vehicle"},
